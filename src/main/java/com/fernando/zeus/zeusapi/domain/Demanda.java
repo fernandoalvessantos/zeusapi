@@ -1,8 +1,11 @@
 package com.fernando.zeus.zeusapi.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -14,26 +17,28 @@ public class Demanda {
     private Long id;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @NotEmpty(message = "Campo nome não pode ser vazio")
     private String nome;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String descricao;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @Transient
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date dataCadastro;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @Transient
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date dataInicio;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @Transient
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date dataFimPrevisão;
 
     @ManyToOne
     @JoinColumn(name = "CLIENTE_ID")
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @NotNull(message = "O Campo cliente é obrigatório")
     private Usuario cliente;
 
 

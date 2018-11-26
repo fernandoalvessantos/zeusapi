@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +31,7 @@ public class DemandaService {
 
     public Demanda salvar(Demanda demanda){
         demanda.setId(null);
+        demanda.setDataCadastro(new Date());
         return demandaRepository.save(demanda);
     }
 

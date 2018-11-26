@@ -2,8 +2,11 @@ package com.fernando.zeus.zeusapi.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -13,9 +16,11 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty(message = "O Campo nome é obrigatório")
     private String nome;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @NotNull(message = "O Campo perfil é obrigatório")
+    @JsonProperty("perfilAcesso")
     private String perfil;
 
     @OneToMany(mappedBy = "cliente")
