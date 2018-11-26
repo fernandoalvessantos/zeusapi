@@ -5,6 +5,7 @@ import com.fernando.zeus.zeusapi.domain.Usuario;
 import com.fernando.zeus.zeusapi.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -20,7 +21,8 @@ public class UsuarioResources {
     @Autowired
     private UsuarioService usuarioService;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE
+            , MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<List<Usuario>> listar(){
         List<Usuario> usuarios = usuarioService.listar();
         return ResponseEntity.status(HttpStatus.OK).body(usuarios);

@@ -4,6 +4,7 @@ import com.fernando.zeus.zeusapi.domain.Demanda;
 import com.fernando.zeus.zeusapi.services.DemandaService;
 import com.fernando.zeus.zeusapi.services.exceptions.DemandaNaoEncontradoException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/demandas")
@@ -36,7 +38,9 @@ public class DemandasResources {
     public ResponseEntity<?> buscar(@PathVariable("id") Long id){
         Demanda demanda =  null;
         demanda = demandaService.buscar(id);
-        return ResponseEntity.status(HttpStatus.OK).body(demanda);
+
+        CacheControl cacheControl = CacheControl.maxAge(20, TimeUnit.SECONDS);
+        return ResponseEntity.status(HttpStatus.OK).cacheControl(cacheControl).body(demanda);
     }
 
     @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
