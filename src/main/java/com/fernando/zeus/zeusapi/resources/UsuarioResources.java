@@ -21,23 +21,45 @@ public class UsuarioResources {
     @Autowired
     private UsuarioService usuarioService;
 
-    @RequestMapping(method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE
+    @RequestMapping(value = "/clientes",method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE
             , MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<List<Usuario>> listar(){
-        List<Usuario> usuarios = usuarioService.listar();
+    public ResponseEntity<List<Usuario>> listarClientes(){
+        List<Usuario> usuarios = usuarioService.listarClientes(UsuarioService.PERFIL_CLIENTE);
         return ResponseEntity.status(HttpStatus.OK).body(usuarios);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> salvar(@Valid @RequestBody Usuario usuario){
+    @RequestMapping(value = "/gerentes",method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE
+            , MediaType.APPLICATION_XML_VALUE})
+    public ResponseEntity<List<Usuario>> listarGerentes(){
+        List<Usuario> usuarios = usuarioService.listarClientes(UsuarioService.PERFIL_GERENTE);
+        return ResponseEntity.status(HttpStatus.OK).body(usuarios);
+    }
+
+    @RequestMapping(value = "/clientes",method = RequestMethod.POST)
+    public ResponseEntity<Void> salvarCliente(@Valid @RequestBody Usuario usuario){
+        usuario.setPerfil(UsuarioService.PERFIL_CLIENTE);
         usuario = usuarioService.salvar(usuario);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(usuario.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
-    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
-    public ResponseEntity<Usuario> buscar(@PathVariable("id") Long id){
-        return ResponseEntity.status(HttpStatus.OK).body(usuarioService.buscar(id));
+    @RequestMapping(value = "/gerentes", method = RequestMethod.POST)
+    public ResponseEntity<Void> salvarGerente(@Valid @RequestBody Usuario usuario){
+        usuario.setPerfil(UsuarioService.PERFIL_GERENTE);
+        usuario = usuarioService.salvar(usuario);
+
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(usuario.getId()).toUri();
+        return ResponseEntity.created(uri).build();
+    }
+
+    @RequestMapping(value = "/clientes/{id}",method = RequestMethod.GET)
+    public ResponseEntity<Usuario> buscarCliente(@PathVariable("id") Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioService.buscarCliente(id));
+    }
+
+    @RequestMapping(value = "/gerentes/{id}",method = RequestMethod.GET)
+    public ResponseEntity<Usuario> buscarGerente(@PathVariable("id") Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioService.buscarGerente(id));
     }
 }

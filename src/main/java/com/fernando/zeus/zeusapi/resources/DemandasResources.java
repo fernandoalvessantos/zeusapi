@@ -1,8 +1,9 @@
 package com.fernando.zeus.zeusapi.resources;
 
 import com.fernando.zeus.zeusapi.domain.Demanda;
+import com.fernando.zeus.zeusapi.domain.Usuario;
 import com.fernando.zeus.zeusapi.services.DemandaService;
-import com.fernando.zeus.zeusapi.services.exceptions.DemandaNaoEncontradoException;
+import com.fernando.zeus.zeusapi.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
@@ -22,35 +23,42 @@ public class DemandasResources {
     @Autowired
     private DemandaService demandaService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<Demanda>> listar(){
-        return ResponseEntity.status(HttpStatus.OK).body(demandaService.listar());
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<List<Demanda>> listar(@PathVariable("id") Long idCliente){
+        return ResponseEntity.status(HttpStatus.OK).body(demandaService.listar(idCliente));
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> salvar(@Valid @RequestBody Demanda demanda){
+    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
+    public ResponseEntity<Void> salvar(@PathVariable("id")Long idCliente, @Valid @RequestBody Demanda demanda){
+        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        //System.out.println(authentication.getName());
+        Usuario cliente = usuarioService.buscarCliente(idCliente);
+        demanda.setCliente(cliente);
         demanda = demandaService.salvar(demanda);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(demanda.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
-    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
-    public ResponseEntity<?> buscar(@PathVariable("id") Long id){
+    @RequestMapping(value = "/{id}/{idDemanda}",method = RequestMethod.GET)
+    public ResponseEntity<?> buscar(@PathVariable("id") Long id, @PathVariable("idDemanda") Long idDemanda ){
         Demanda demanda =  null;
-        demanda = demandaService.buscar(id);
+        demanda = demandaService.buscar(idDemanda, id);
 
         CacheControl cacheControl = CacheControl.maxAge(20, TimeUnit.SECONDS);
         return ResponseEntity.status(HttpStatus.OK).cacheControl(cacheControl).body(demanda);
     }
 
-    @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
-    public ResponseEntity<Void> deletar(@PathVariable("id") Long id){
+    @RequestMapping(value = "/{idDemanda}",method = RequestMethod.DELETE)
+    public ResponseEntity<Void> deletar(@PathVariable("idDemanda") Long id){
         demandaService.deletar(id);
         return ResponseEntity.noContent().build();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Void> atualziar(@RequestBody Demanda demanda, @PathVariable("id") Long id){
+    public ResponseEntity<Void> atualizar(@RequestBody Demanda demanda, @PathVariable("id") Long id){
         demanda.setId(id);
         demandaService.atualizar(demanda);
         return ResponseEntity.noContent().build();

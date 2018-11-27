@@ -38,7 +38,7 @@ public class Demanda {
     @ManyToOne
     @JoinColumn(name = "CLIENTE_ID")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @NotNull(message = "O Campo cliente é obrigatório")
+    //@NotNull(message = "O Campo cliente é obrigatório")
     private Usuario cliente;
 
 

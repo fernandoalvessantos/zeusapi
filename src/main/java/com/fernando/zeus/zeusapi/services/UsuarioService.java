@@ -13,11 +13,21 @@ import java.util.Optional;
 @Service
 public class UsuarioService {
 
+    public static final String PERFIL_CLIENTE = "CLIENTE";
+    public static final String PERFIL_GERENTE = "GERENTE";
     @Autowired
     private UsuarioRepository usuarioRepository;
 
     public List<Usuario> listar(){
         return usuarioRepository.findAll();
+    }
+
+    public List<Usuario> listarClientes(String perfil){
+        if(PERFIL_CLIENTE.equals(perfil)){
+            return usuarioRepository.listaUsuariosClientes();
+        }else{
+            return usuarioRepository.listaUsuariosGerentes();
+        }
     }
 
     public Usuario salvar(Usuario usuario){
@@ -31,8 +41,16 @@ public class UsuarioService {
         return usuarioRepository.save(usuario);
     }
 
-    public Usuario buscar(Long id){
-        Optional<Usuario> opt = usuarioRepository.findById(id);
+    public Usuario buscarCliente(Long id){
+        Optional<Usuario> opt = usuarioRepository.buscaUsuarioPorIdePerfil(id, UsuarioService.PERFIL_CLIENTE);
+        if(!opt.isPresent()){
+            throw new UsuarioNaoEncontradoException("Usuário não encontrado");
+        }
+        return opt.get();
+    }
+
+    public Usuario buscarGerente(Long id){
+        Optional<Usuario> opt = usuarioRepository.buscaUsuarioPorIdePerfil(id, UsuarioService.PERFIL_GERENTE);
         if(!opt.isPresent()){
             throw new UsuarioNaoEncontradoException("Usuário não encontrado");
         }

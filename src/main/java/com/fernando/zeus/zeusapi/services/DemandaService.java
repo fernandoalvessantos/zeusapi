@@ -21,6 +21,10 @@ public class DemandaService {
         return demandaRepository.findAll();
     }
 
+    public List<Demanda> listar(Long idCliente){
+        return demandaRepository.listarPorIdCliente(idCliente);
+    }
+
     public Demanda buscar(Long id){
         Optional<Demanda> demandaOpt = demandaRepository.findById(id);
         if(!demandaOpt.isPresent()){
@@ -28,6 +32,15 @@ public class DemandaService {
         }
         return demandaOpt.get();
     }
+
+    public Demanda buscar(Long id, Long idCliente){
+        Optional<Demanda> demandaOpt = demandaRepository.buscaPorIdeIdCliente(id, idCliente);
+        if(!demandaOpt.isPresent()){
+            throw new DemandaNaoEncontradoException("Demanda não foi encontrado");
+        }
+        return demandaOpt.get();
+    }
+
 
     public Demanda salvar(Demanda demanda){
         demanda.setId(null);
