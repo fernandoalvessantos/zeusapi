@@ -25,6 +25,13 @@ public class DemandaService {
         return demandaRepository.listarPorIdCliente(idCliente);
     }
 
+    public List<Demanda> listarPesquisa(Long idCliente, Demanda demanda){
+        return demandaRepository.listaPesquisaPorCliente(idCliente,
+                demanda.getId(),
+                demanda.getNome(),
+                demanda.getDescricao());
+    }
+
     public Demanda buscar(Long id){
         Optional<Demanda> demandaOpt = demandaRepository.findById(id);
         if(!demandaOpt.isPresent()){

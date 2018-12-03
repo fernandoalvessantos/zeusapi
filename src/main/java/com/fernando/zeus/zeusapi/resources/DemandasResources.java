@@ -30,11 +30,14 @@ public class DemandasResources {
     public ResponseEntity<List<Demanda>> listar(@PathVariable("id") Long idCliente){
         return ResponseEntity.status(HttpStatus.OK).body(demandaService.listar(idCliente));
     }
+    @RequestMapping(value = "/{id}/pesquisa", method = RequestMethod.POST)
+    public ResponseEntity<List<Demanda>> listarPesquisa(@PathVariable("id") Long idCliente, @RequestBody Demanda demandaPesquisa){
+        return ResponseEntity.status(HttpStatus.OK).body(demandaService.listarPesquisa(idCliente, demandaPesquisa));
+    }
+
 
     @RequestMapping(value = "/{id}", method = RequestMethod.POST)
     public ResponseEntity<Void> salvar(@PathVariable("id")Long idCliente, @Valid @RequestBody Demanda demanda){
-        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //System.out.println(authentication.getName());
         Usuario cliente = usuarioService.buscarCliente(idCliente);
         demanda.setCliente(cliente);
         demanda = demandaService.salvar(demanda);

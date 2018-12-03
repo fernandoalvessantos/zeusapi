@@ -1,6 +1,7 @@
 package com.fernando.zeus.zeusapi.resources;
 
 
+import com.fernando.zeus.zeusapi.domain.Login;
 import com.fernando.zeus.zeusapi.domain.Usuario;
 import com.fernando.zeus.zeusapi.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,5 +62,10 @@ public class UsuarioResources {
     @RequestMapping(value = "/gerentes/{id}",method = RequestMethod.GET)
     public ResponseEntity<Usuario> buscarGerente(@PathVariable("id") Long id){
         return ResponseEntity.status(HttpStatus.OK).body(usuarioService.buscarGerente(id));
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ResponseEntity<Usuario> realizaLogin(@Valid @RequestBody Login login){
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioService.realizarLogin(login));
     }
 }

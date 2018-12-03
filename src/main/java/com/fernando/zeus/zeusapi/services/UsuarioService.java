@@ -1,5 +1,6 @@
 package com.fernando.zeus.zeusapi.services;
 
+import com.fernando.zeus.zeusapi.domain.Login;
 import com.fernando.zeus.zeusapi.domain.Usuario;
 import com.fernando.zeus.zeusapi.repository.UsuarioRepository;
 import com.fernando.zeus.zeusapi.services.exceptions.UsuarioExistenteException;
@@ -53,6 +54,14 @@ public class UsuarioService {
         Optional<Usuario> opt = usuarioRepository.buscaUsuarioPorIdePerfil(id, UsuarioService.PERFIL_GERENTE);
         if(!opt.isPresent()){
             throw new UsuarioNaoEncontradoException("Usuário não encontrado");
+        }
+        return opt.get();
+    }
+
+    public Usuario realizarLogin(Login login){
+        Optional<Usuario> opt = usuarioRepository.buscaLogin(login.getEmail(), login.getSenha());
+        if(!opt.isPresent()){
+            throw new UsuarioNaoEncontradoException("Login e/ou senha inválidos");
         }
         return opt.get();
     }

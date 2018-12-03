@@ -19,8 +19,11 @@ public class Usuario {
     @NotEmpty(message = "O Campo nome é obrigatório")
     private String nome;
 
-    @NotEmpty(message = "O Campo senha é obrigatório")
+    @NotEmpty(message = "O Campo email é obrigatório")
     private String email;
+
+    @NotEmpty(message = "O Campo senha é obrigatório")
+    private String senha;
 
     @NotNull(message = "O Campo perfil é obrigatório")
     @JsonProperty("perfilAcesso")
@@ -68,5 +71,13 @@ public class Usuario {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 }
