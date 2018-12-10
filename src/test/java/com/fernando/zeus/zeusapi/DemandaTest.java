@@ -38,9 +38,17 @@ public class DemandaTest {
         usuario2.setEmail("email");
         usuario2.setSenha("senha");
 
+        Usuario usuario3 = new Usuario();
+        usuario3.setNome("USER TESTE 3");
+        usuario3.setPerfil("gerente");
+        usuario3.setEmail("email");
+        usuario3.setSenha("senha");
+
         usuario = testEntityManager.persist(usuario);
         testEntityManager.flush();
         usuario2 = testEntityManager.persist(usuario2);
+        testEntityManager.flush();
+        usuario3 = testEntityManager.persist(usuario3);
         testEntityManager.flush();
 
         Demanda demanda = new Demanda();
@@ -64,6 +72,14 @@ public class DemandaTest {
         demanda3 = testEntityManager.persist(demanda3);
         testEntityManager.flush();
 
+    }
+
+    public void relacionando(){
+        Demanda demanda = testEntityManager.find(Demanda.class, 1L);
+        Usuario usuario =testEntityManager.find(Usuario.class, 3L);
+        demanda.setGerente(usuario);
+        testEntityManager.merge(demanda);
+        testEntityManager.flush();
     }
 
     @Test
@@ -92,5 +108,20 @@ public class DemandaTest {
         Assert.assertTrue(lista.size() == 2);
     }
 
+    @Test
+    public void testeNaoRelacionados(){
+        this.criandoReg();
+        List<Demanda> lista = demandaRepository.listaNaoRelacionadas();
+        if(lista.size() != 3){
+            Assert.fail();
+        }
+        this.relacionando();
+        List<Demanda> lista2 = demandaRepository.listaNaoRelacionadas();
+        for (Demanda demanda: lista2 ) {
+            if(demanda.getId() == 1L){
+                Assert.fail("Listou demanda já relacionada");
+            }
+        }
+    }
 
 }

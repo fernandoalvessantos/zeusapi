@@ -1,2 +1,0 @@
-insert into usuario (nome,email, senha, perfil) values ('Usuario 1', 'usuario1@gmail.com', '123', 'CLIENTE');
-insert into usuario (nome,email, senha, perfil) values ('Usuario 2', 'usuario2@gmail.com', '123', 'CLIENTE');

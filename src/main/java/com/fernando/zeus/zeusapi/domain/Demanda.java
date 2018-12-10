@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -38,9 +37,12 @@ public class Demanda {
     @ManyToOne
     @JoinColumn(name = "CLIENTE_ID")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    //@NotNull(message = "O Campo cliente é obrigatório")
     private Usuario cliente;
 
+    @ManyToOne
+    @JoinColumn(name = "GERENTE_ID")
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Usuario gerente;
 
     public Demanda(String nome) {
         this.nome = nome;
@@ -102,5 +104,13 @@ public class Demanda {
 
     public void setCliente(Usuario cliente) {
         this.cliente = cliente;
+    }
+
+    public Usuario getGerente() {
+        return gerente;
+    }
+
+    public void setGerente(Usuario gerente) {
+        this.gerente = gerente;
     }
 }
