@@ -16,11 +16,13 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
     @Query("SELECT d FROM Demanda d JOIN d.cliente c WHERE c.id = :idCliente " +
             "AND (d.id = :id OR :id is null) " +
             "AND (d.nome like CONCAT('%', :nome, '%') OR :nome is null )" +
-            "AND (d.descricao like CONCAT('%', :descricao, '%') OR :descricao is null )")
+            "AND (d.descricao like CONCAT('%', :descricao, '%') OR :descricao is null )" +
+            "AND (d.situacao = :situacao OR :situacao is null )")
     List<Demanda> listaPesquisaPorCliente(@Param("idCliente") Long idCliente,
                                           @Param("id") Long id,
                                           @Param("nome") String nome,
-                                          @Param("descricao") String descricao);
+                                          @Param("descricao") String descricao,
+                                          @Param("situacao") Integer situacao);
 
     @Query("SELECT d FROM Demanda d WHERE d.gerente is null")
     List<Demanda> listaNaoRelacionadas();
@@ -48,12 +50,14 @@ public interface DemandaRepository extends JpaRepository<Demanda, Long> {
             "WHERE g.id = :idGerente " +
             "AND (d.id = :idDemanda OR :idDemanda is null) " +
             "AND (d.nome like CONCAT('%', :nome, '%') OR :nome is null )" +
-            "AND (d.descricao like CONCAT('%', :descricao, '%') OR :descricao is null )" +
-            "AND (c.nome like CONCAT('%', :nomeCliente, '%') OR :nomeCliente is null )")
+            "AND (d.descricao like CONCAT('%', :descricao, '%') OR :descricao is null ) " +
+            "AND (c.nome like CONCAT('%', :nomeCliente, '%') OR :nomeCliente is null ) " +
+            "AND (d.situacao = :situacao OR :situacao is null) ")
     List<Demanda> listaPesquisaPorGerente(@Param("idDemanda") Long idDemanda,
                                           @Param("nome") String nome,
                                           @Param("descricao") String descricao,
                                           @Param("nomeCliente") String nomeCliente,
+                                          @Param("situacao") Integer situacao,
                                           @Param("idGerente") Long idGerente);
 
 }

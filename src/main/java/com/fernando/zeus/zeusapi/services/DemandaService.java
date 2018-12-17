@@ -34,7 +34,8 @@ public class DemandaService {
         return demandaRepository.listaPesquisaPorCliente(idCliente,
                 demanda.getId(),
                 demanda.getNome(),
-                demanda.getDescricao());
+                demanda.getDescricao(),
+                demanda.getSituacao());
     }
 
     public List<Demanda> listarNaoRelacionadas() {
@@ -68,11 +69,13 @@ public class DemandaService {
     public Demanda salvar(Demanda demanda) {
         demanda.setId(null);
         demanda.setDataCadastro(new Date());
+        demanda.setSituacao(1); //Novo
         return demandaRepository.save(demanda);
     }
 
     public void deletar(Long id) {
         try {
+
             demandaRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new DemandaNaoEncontradoException("Demanda não encontrada");
@@ -103,7 +106,8 @@ public class DemandaService {
         return demandaRepository.listaPesquisaPorGerente(demandaGerente.getIdDemanda(),
                 demandaGerente.getNome(),
                 demandaGerente.getDescricao(),
-                demandaGerente.getNomeCliente(), idGerente);
+                demandaGerente.getNomeCliente(),
+                demandaGerente.getSituacao(), idGerente);
     }
 
 }

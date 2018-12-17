@@ -85,23 +85,23 @@ public class DemandaTest {
     @Test
     public void testePesquisaQuantidade() {
         this.criandoReg();
-        List<Demanda> lista = demandaRepository.listaPesquisaPorCliente(1L, null, null, null);
+        List<Demanda> lista = demandaRepository.listaPesquisaPorCliente(1L, null, null, null, null);
         if (lista.isEmpty())
             Assert.fail();
 
-        List<Demanda> lista2 = demandaRepository.listaPesquisaPorCliente(1L, 1L, null, null);
+        List<Demanda> lista2 = demandaRepository.listaPesquisaPorCliente(1L, 1L, null, null, null);
         if (lista2.get(0).getId() != 1L)
             Assert.fail();
 
-        List<Demanda> lista3 = demandaRepository.listaPesquisaPorCliente(1L, null, "Fernando", null);
+        List<Demanda> lista3 = demandaRepository.listaPesquisaPorCliente(1L, null, "Fernando", null, null);
         if (!lista3.get(0).getNome().equals("Fernando"))
             Assert.fail();
 
-        List<Demanda> lista4 = demandaRepository.listaPesquisaPorCliente(1L, null, "Fern", null);
+        List<Demanda> lista4 = demandaRepository.listaPesquisaPorCliente(1L, null, "Fern", null, null);
         if (!lista4.get(0).getNome().equals("Fernando"))
             Assert.fail();
 
-        List<Demanda> lista5 = demandaRepository.listaPesquisaPorCliente(1L, null, null, "Fernando");
+        List<Demanda> lista5 = demandaRepository.listaPesquisaPorCliente(1L, null, null, "Fernando", null);
         if (!lista5.get(0).getDescricao().equals("Descrição Fernando"))
             Assert.fail();
 

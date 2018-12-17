@@ -23,6 +23,9 @@ public class Demanda {
     private String descricao;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Integer situacao;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonFormat(pattern = "dd/MM/yyyy")
     private Date dataCadastro;
 
@@ -112,5 +115,13 @@ public class Demanda {
 
     public void setGerente(Usuario gerente) {
         this.gerente = gerente;
+    }
+
+    public Integer getSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(Integer situacao) {
+        this.situacao = situacao;
     }
 }
