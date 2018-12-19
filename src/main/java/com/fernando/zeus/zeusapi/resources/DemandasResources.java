@@ -126,7 +126,7 @@ public class DemandasResources {
     })
     @RequestMapping(value = "/{idDemanda}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> deletar(@PathVariable("idDemanda") Long id) {
-        demandaService.deletar(id);
+        demandaService.cancelar(id);
         return ResponseEntity.noContent().build();
     }
 

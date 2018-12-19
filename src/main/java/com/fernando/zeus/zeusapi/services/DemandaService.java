@@ -82,6 +82,16 @@ public class DemandaService {
         }
     }
 
+    public void cancelar(Long id) {
+        try {
+            Demanda demanda = this.buscar(id);
+            demanda.setSituacao(6);
+            this.atualizar(demanda);
+        } catch (EmptyResultDataAccessException e) {
+            throw new DemandaNaoEncontradoException("Demanda não encontrada");
+        }
+    }
+
     public void atualizar(Demanda demanda) {
         this.verificarExistencia(demanda);
         demandaRepository.save(demanda);
